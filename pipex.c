@@ -1,42 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/17 21:54:26 by mofaisal          #+#    #+#             */
+/*   Updated: 2023/02/17 22:20:10 by mofaisal         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "pipex.h"
+
+void free_string_array(char **array) {
+    int i = 0;
+    while (array[i] != NULL) {
+        free(array[i]);
+        i++;
+    }
+    free(array);
+}
 
 int redirect_output_to_file(char *command, char *filename, char *joined_str) 
 {
     pid_t pid;
-    int status;
     int fd;
+    char **args;
+    char **envp;
     
     pid = fork();
-    if (pid == 0)     // Child process
+    envp = NULL;
+    if (pid == 0)     
     {
         fd = open(filename, O_WRONLY | O_CREAT, 0777);
-        if (fd < 0) {
-            ft_printf("Error: Creating/Opening the file failed\n");
-            exit(1);
-        }
+        if (fd < 0)
+            return(ft_printf("Error: Creating/Opening the file failed\n"), exit(1), 1);            
         dup2(fd, STDOUT_FILENO);
         close(fd);
-
-        char *envp[] = { NULL };
-        char **args = ft_split(command, ' ');
-        if (execve(joined_str, args, envp) < 0) {
-            ft_printf("Error: Executing the command failed\n");
-            exit(1);
-        }
-    } 
-    
-    else if (pid < 0)   // Fork failed
-    {
-        ft_printf("Forking the process failed\n");
-        return 1;
-    } 
-    
-    else 
-    {
-        // Parent process
-        wait(&status);
+        args = ft_split(command, ' ');
+        if (execve(joined_str, args, envp) < 0)
+            return (ft_printf("Error: Executing the command failed\n"), exit(1), 1);
     }
+    else if (pid < 0)   // Fork failed
+        return(ft_printf("Forking the process failed\n"), 0);
+    else        
+        wait(NULL);
     return 0;
 }
 
@@ -77,10 +85,7 @@ int main(int argc, char *argv[], char *env[])
             i++;
         }
         if(!s)
-        {
-           ft_printf("ERROR WHILE FINDING THE PATH\n");
-            exit(3);
-        }
+           return (ft_printf("ERROR WHILE FINDING THE PATH\n"), exit(1), 1);
         check_leaks();
         str = ft_split(s, ':');
         i = 0;
@@ -96,28 +101,20 @@ int main(int argc, char *argv[], char *env[])
             // ft_printf("%s\n", joinedstr);
             if (access(joinedstr, F_OK) == 0){
             {
-                // char *args[] = { argv[2] , NULL}; 
-                // if (execvp(joinedstr, args) < 0) {
-                //     ft_printf("Error: Executing the command failed\n");
-                //     exit(1);
-                // }
                 redirect_output_to_file(argv[2], argv[4], joinedstr);
-                 check_leaks();
-                // execute_command(joinedstr);
+                // ft_printf("%p\n", joinedstr);
+                free(joinedstr);
+                // check_leaks();
                 return (0);
             }
             }
             i++;
         }
-        // check_leaks();
         if (str[i] == NULL) 
-        {
-         ft_printf("the command %s doesn't exist\n", argv[2]); 
-        }
-        check_leaks();
+            ft_printf("the command %s doesn't exist\n", argv[2]);
+        
+        free_string_array(str);
         free(a);
         free(joinedstr);
-    // check_leaks();
-    check_leaks();
     return (0);
 }
