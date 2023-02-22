@@ -1,7 +1,7 @@
 NAME = pipex
 
 SRCS =	pipex.c \
-		leacks_cheker_ex.c
+		pipex_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
