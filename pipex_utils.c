@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 22:04:20 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/02/22 21:58:29 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/02/24 21:20:07 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*find_command_path(char **directories, char *command)
 		cmd[j++] = command[i++];
 	cmd[ft_strlen(command) + 1] = '\0';
 	i = 0;
+	if (access(command, F_OK) == 0)
+		return (command);
 	while (directories[i])
 	{
 		joinedstr = ft_strjoin(directories[i], cmd);
@@ -76,47 +78,28 @@ char	*find_command_path(char **directories, char *command)
 		free(joinedstr);
 		i++;
 	}
+	i = -1;
+	while (directories[++i])
+		free(directories[i]);
+	free(directories);
 	return (NULL);
 }
 
-int child_process(char **argv, char **env, int *fd)
+void	execute(char *argv, char **env)
 {
 	char	**flags;
 	char	*path;
 	char	**dirs;
+	char	*tmp;
 
-	flags = NULL;
-	fd = open(argv[1], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (fd < 0)
-	{
-		perror("Error while opening the output file");
-		exit(1);
-	}
-	dup2(fd[1], STDOUT_FILENO);
-	close(fd[0]);
-	
-	flags = ft_split(argv[2], ' ');
+	tmp = NULL;
 	path = get_path_from_env(env);
-	if (!(path))
-		return (ft_printf("ERROR WHILE FINDING THE PATH\n") * 0 + 1);
+	if (!path)
+		exit((write(2, "Error: While Finding PATH\n", 27)) * 0 + 1);
+	flags = ft_split(argv, ' ');
 	dirs = ft_split(path, ':');
-	if (execve(find_command_path(dirs, argv[2]), flags, env) < 0)
-		return (ft_printf("Error: Executing the command failed\n"), exit(1), 1);	
-	return (0);
-}
-int parent_process(char	**argv, char **env, int *fd)
-{
-	char	**flags;
-	char	*path;
-	char	**dirs;
-
-	flags = NULL;
-	fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (fd < 0)
-	{
-		perror("Error while opening the output file");
-		exit(1);
-	}
-	dup2(fd[1], STDOUT_FILENO);
-	close(fd[0]);
+	tmp = find_command_path(dirs, flags[0]);
+	if (execve(tmp, flags, env) < 0)
+		exit((write(2, "Error: Executing the command failed\n", 37)) * 0 + 1);
+	exit(0);
 }

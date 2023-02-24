@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 18:16:01 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/02/22 21:02:21 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/02/24 21:08:48 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@
 
 void	free_string_array(char **array);
 void	open_file_and_redirect_input(char *file_path);
+void	execute(char *argv, char **env);
 char	*get_path_from_env(char **env);
 char	*find_command_path(char **directories, char *command);
-int		child_process(char *command, char *output_file_path,
-			char *command_path);
+void	child_process(char **argv, char **env, int *fd);
+void	parent_process(char	**argv, char **env, int *fd);
 
 #endif
