@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 22:04:28 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/02/24 21:08:34 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/02/26 13:58:10 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ void	child_process(char **argv, char **env, int *fd)
 	dup2(fd[1], STDOUT_FILENO);
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
+	close(fd[1]);
 	close(infile);
-	execute(argv[2], env);
+	// close(STDIN_FILENO);
+	execute(argv[2], env, infile);
 }
 
 void	parent_process(char **argv, char **env, int *fd)
@@ -61,9 +63,10 @@ void	parent_process(char **argv, char **env, int *fd)
 		perror("Error while opening the output file");
 		exit(1);
 	}
-	dup2(fd[0], STDIN_FILENO);
 	dup2(outfile, STDOUT_FILENO);
+	dup2(fd[0], STDIN_FILENO);
 	close(fd[1]);
+	close(fd[0]);
 	close(outfile);
-	execute(argv[3], env);
+	execute(argv[3], env, outfile);
 }

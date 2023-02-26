@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 19:09:08 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/02/14 21:03:18 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:16:16 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	ft_printf(const char *input, ...)
 	va_end(args);
 	return (result);
 }
-#include <stdio.h>
 // int main()
 // {
 // 	ft_printf("%s%d%s", "jklj", 23131, "jhjkhk");
