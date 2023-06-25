@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:31:27 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/06/25 18:27:58 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/06/25 20:14:41 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int ph;
-	t_fork *left_fork;
-	t_fork *right_fork;
 	int id;
-	size_t time;
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
+	size_t time;
+	t_fork *left_fork;
+	t_fork *right_fork;
 } t_philo;
 
 
@@ -50,5 +50,7 @@ typedef struct s_table
 
 int	ft_digit(char *av[]);
 int error_checking(int ac, char *av);
+size_t	get_current_time(void);
+
 
 # endif

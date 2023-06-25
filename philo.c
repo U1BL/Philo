@@ -6,44 +6,40 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:28:45 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/06/25 18:51:16 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/06/25 21:07:17 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	get_current_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001));
-}
-
 void *routine(void *args)
 {
     t_philo *philo = (t_philo *)args;
-    if (philo->id == 3)
-        sleep(1);
-    if(philo->id % 2 == 0)
+    while ((int)(get_current_time() - philo->time) < philo->time_to_die)
     {
-        pthread_mutex_lock(&philo->right_fork->fork);
-        pthread_mutex_lock(&philo->left_fork->fork);
+        if (philo->id % 2 == 0)
+        {
+            printf("\e[1;97mtime:%zu || Philo \e[1;95mid:%d \e[0m\e[1;97mis \e[1;95m[Has Taking A Fork]\n\e[0m", get_current_time() - philo->time,  philo->id);    
+            pthread_mutex_lock(&philo->right_fork->fork);
+            pthread_mutex_lock(&philo->left_fork->fork);
+        }
+        else
+        {
+            printf("\e[1;97mtime:%zu || Philo \e[1;95mid:%d \e[0m\e[1;97mis \e[1;95m[Has Taking A Fork]\n\e[0m", get_current_time() - philo->time,  philo->id);    
+            pthread_mutex_lock(&philo->left_fork->fork);
+            pthread_mutex_lock(&philo->right_fork->fork);
+        }
+        printf("\e[1;97mtime:%zu || Philo \e[1;92mid:%d \e[0m\e[1;97mis \e[1;92m[eating]\n\e[0m", get_current_time() - philo->time,  philo->id);
+        usleep(200000);
+        printf("\e[1;97mtime:%zu || Philo \e[1;93mid:%d \e[0m\e[1;97mis \e[1;93m[sleeping]\n\e[0m", get_current_time() - philo->time,  philo->id);
+        usleep(200000);
+        printf("\e[1;97mtime:%zu || Philo \e[1;94mid:%d \e[0m\e[1;97mis \e[1;94m[thinking]\n\e[0m", get_current_time() - philo->time,  philo->id);
+        pthread_mutex_unlock(&philo->left_fork->fork);
+        pthread_mutex_unlock(&philo->right_fork->fork);
     }
-    else
-    {
-        pthread_mutex_lock(&philo->left_fork->fork);
-        pthread_mutex_lock(&philo->right_fork->fork);
-    }
-    printf("%zu Philo id: %d is eating\n", get_current_time() - philo->time,  philo->id);
-    pthread_mutex_unlock(&philo->left_fork->fork);
-    pthread_mutex_unlock(&philo->right_fork->fork);
 
-    if ((int)(get_current_time() - philo->time) > philo->time_to_die)
-    {
-        printf("%zu Philo id: %d is dead\n", get_current_time() - philo->time,  philo->id);
-        return (NULL);
-    }
+    printf("\e[1;97mtime:%zu || Philo \e[1;91mid:%d \e[0m\e[1;97mis \e[1;91m[dead]\n\e[0m", get_current_time() - philo->time, philo->id);
+    // exit(0);
     
     return (NULL);
 }
@@ -51,36 +47,36 @@ void *routine(void *args)
 int threads(char *av[])
 {
     int i = 0;
-    t_philo *philo = malloc(sizeof(t_philo) * ft_atoi(av[1]));
-    philo->ph = ft_atoi(av[1]);
-    t_fork *forks = malloc(sizeof(t_fork) * philo->ph);
+    t_philo *philo = malloc(sizeof(t_philo) * ft_atoi(av[1])); //allocate memory for philo
+    philo->ph = ft_atoi(av[1]); // number of philo
+    t_fork *forks = malloc(sizeof(t_fork) * philo->ph); // allocate memory for forks
 
-    while(i < philo->ph)
+    while(i < philo->ph) // initialize forks
     {
         pthread_mutex_init(&forks[i].fork, NULL);
         i++;
     }
     i = 0;
-    while(i < philo->ph)
+    while(i < philo->ph) // initialize philo
     {
+        philo[i].id = i + 1;
+        philo[i].time_to_eat = ft_atoi(av[3]);
+        philo[i].time_to_sleep = ft_atoi(av[4]);
+        philo[i].time_to_die = ft_atoi(av[2]);
         philo[i].time = get_current_time();
         philo[i].left_fork = &forks[i];
         philo[i].right_fork = &forks[(i + 1) % philo->ph];
-        philo[i].id = i + 1;
-        philo[i].time_to_eat = ft_atoi(av[3]);
-        philo[i].time_to_die = ft_atoi(av[2]);
-        philo[i].time_to_sleep = ft_atoi(av[4]);
         i++;
     }
     i = 0;
     pthread_t *th = malloc(sizeof(pthread_t) * philo->ph);
-    while (i < philo->ph)
+    while (i < philo->ph) // create threads
     {
         pthread_create(&th[i], NULL, routine, &philo[i]);
         i++;
     }
     i = 0;
-    while (i < philo->ph)
+    while (i < philo->ph) // join threads
     {
         pthread_join(th[i], NULL);
         i++;
@@ -103,8 +99,6 @@ int main(int ac, char *av[])
        else
        {
             threads(av);
-            if (ac == 6)
-               printf("Number of times each philosopher must eat: %d\n", ft_atoi(av[5]));
        }
    }
    else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfaisal <mfaisal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:49:54 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/06/09 20:59:10 by mfaisal          ###   ########.fr       */
+/*   Updated: 2023/06/25 20:14:34 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,12 @@ int	ft_digit(char *av[])
 		i++;
 	}
 	return (1);
+}
+
+size_t	get_current_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001));
 }
