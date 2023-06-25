@@ -6,12 +6,11 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 14:57:11 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/02/24 21:08:12 by mofaisal         ###   ########.fr       */
+/*   Updated: 2022/10/30 18:41:05 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 size_t	ft_strlen(const char *s)
 {

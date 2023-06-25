@@ -1,8 +1,7 @@
+NAME = philo
 
-NAME = pipex
-
-SRCS =	pipex.c \
-		pipex_utils.c
+SRCS =	philo.c \
+		philo_utils.c\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -15,7 +14,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@make -C ./libft
 	@make -C ./printf
-	$(CC) $(CFLAGS) $(OBJS)	libft/libft.a printf/libftprintf.a -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME)
 
 clean:
 	rm -f $(OBJS)

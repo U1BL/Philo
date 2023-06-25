@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfaisal <mfaisal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 22:11:17 by mofaisal          #+#    #+#             */
-/*   Updated: 2022/11/06 18:36:48 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/06/09 20:51:30 by mfaisal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdint.h>
 
 typedef struct s_list
 {
@@ -51,7 +52,7 @@ int					ft_memcmp(const void *s1, const void *s2, size_t n);
 
 int					ft_isalpha(int c);
 
-int					ft_isdigit(int c);
+int					ft_isdigit(const char *str, char c, int *i);
 
 int					ft_isalnum(int c);
 
@@ -73,8 +74,6 @@ size_t				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 
-char				*ft_strchr(const char *s, int c);
-
 char				*ft_strrchr(const char *s, int c);
 
 char				*ft_strnstr(const char *haystack, const char *needle,
@@ -84,8 +83,6 @@ char				*ft_strdup(const char *s1);
 
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 
-char				*ft_strjoin(char const *s1, char const *s2);
-
 char				*ft_strtrim(char const *s1, char const *set);
 
 char				*ft_itoa(int n);
@@ -93,5 +90,9 @@ char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 
 char				**ft_split(char const *s, char c);
+
+int					ft_strchr(char *str, int c);
+
+int					ft_wallcheck(char *str);
 
 #endif

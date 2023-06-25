@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 19:09:08 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/02/22 18:16:16 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/03/07 19:49:45 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ int	ft_printf(const char *input, ...)
 	va_end(args);
 	return (result);
 }
-// int main()
-// {
-// 	ft_printf("%s%d%s", "jklj", 23131, "jhjkhk");
-// 	va_arg(ap, type)  
-// 	return (0);
-// }
+
+#include <stdio.h>
+int main()
+{
+	int m = ft_printf("%s%d%s\n", "jklj", 3131, "jhjkhk");
+	ft_printf("%d\n", m);
+	return (0);
+}
