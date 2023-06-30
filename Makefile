@@ -2,6 +2,8 @@ NAME = philo
 
 SRCS =	philo.c \
 		philo_utils.c\
+		threads.c\
+
 
 OBJS = $(SRCS:.c=.o)
 
