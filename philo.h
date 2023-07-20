@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mfaisal <mfaisal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:31:27 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/06/30 16:53:10 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/07/20 18:23:11 by mfaisal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <limits.h>
 
 typedef struct s_fork
 {
@@ -34,6 +35,7 @@ typedef struct s_philo
 	pthread_t *threads;
 	int id;
 	int time_to_die;
+	int num_ph;
 	int time_to_eat;
 	int time_to_sleep;
 	bool is_dead;
@@ -43,9 +45,7 @@ typedef struct s_philo
 	int num_times_eaten; // Number of times the philosopher has eaten
 	int num_times_to_eat;
     pthread_mutex_t eat_count_mutex; // Mutex for accessing num_times_eaten
-} t_philo;
-
-
+}	t_philo;
 
 typedef struct s_table
 {
