@@ -6,7 +6,7 @@
 /*   By: mfaisal <mfaisal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 17:13:40 by mofaisal          #+#    #+#             */
-/*   Updated: 2023/07/20 20:41:30 by mfaisal          ###   ########.fr       */
+/*   Updated: 2023/07/23 22:14:58 by mfaisal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,22 @@ void *routine(void *args)
             pthread_mutex_lock(&philo->left_fork->fork);
             pthread_mutex_lock(&philo->right_fork->fork);
         }
-        printf("%d\n", philo->is_dead);
         if(philo->is_dead)
         {
             pthread_mutex_unlock(&philo->left_fork->fork);
             pthread_mutex_unlock(&philo->right_fork->fork);
-            printf("heeere->>>>>\n");
             return (NULL);
         }
         printf("\e[1;97mtime:%zu || Philo \e[1;92mid:%d \e[0m\e[1;97mis \e[1;92m[eating]\n\e[0m", get_current_time() - philo->time,  philo->id);
         philo->num_times_to_eat--;
         usleep(philo->time_to_eat * 1000);
+        philo->last_time_eat = (int)(get_current_time());
+        if(philo->is_dead)
+        {
+            pthread_mutex_unlock(&philo->left_fork->fork);
+            pthread_mutex_unlock(&philo->right_fork->fork);
+            return (NULL);
+        }
         if (philo->id % 2 == 0)
         {    
             pthread_mutex_unlock(&philo->right_fork->fork);
@@ -62,6 +67,12 @@ void *routine(void *args)
         }
         printf("\e[1;97mtime:%zu || Philo \e[1;93mid:%d \e[0m\e[1;97mis \e[1;93m[sleeping]\n\e[0m", get_current_time() - philo->time,  philo->id);
         usleep(philo->time_to_sleep * 1000);
+        if(philo->is_dead)
+        {
+            pthread_mutex_unlock(&philo->left_fork->fork);
+            pthread_mutex_unlock(&philo->right_fork->fork);
+            return (NULL);
+        }
         printf("\e[1;97mtime:%zu || Philo \e[1;94mid:%d \e[0m\e[1;97mis \e[1;94m[thinking]\n\e[0m", get_current_time() - philo->time,  philo->id);
     }
         
@@ -141,13 +152,12 @@ static int batata(t_philo *philo)
     int i = -1;
         while (++i < philo->num_ph)
         {
-            int time = (int)(get_current_time()) - philo[i].time;
-            if (time > (int)(philo[i].time_to_die))
+            int time = (int)(get_current_time());
+            if ((time - philo->last_time_eat) > (int)(philo[i].time_to_die))
             {   
                 for(int j = 0; j < philo->num_ph; j++)
                 {
                     philo[j].is_dead = true;
-                    
                 }
                 printf("\e[1;97mtime:%zu || Philo \e[1;91mid:%d \e[0m\e[1;97mis \e[1;91m[dead]\n\e[0m", \
                     get_current_time() - philo[i].time, philo[i].id);

@@ -6,7 +6,7 @@
 /*   By: mfaisal <mfaisal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:31:27 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/07/20 18:23:11 by mfaisal          ###   ########.fr       */
+/*   Updated: 2023/07/23 22:11:01 by mfaisal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include <limits.h>
+
+#define FORK "\e[1;97mtime:%zu || Philo \e[1;95mid:%d \e[0m\e[1;97mis \e[1;95m[Has Taking A Fork]\n\e[0m"
+#define EAT "\e[1;97mtime:%zu || Philo \e[1;92mid:%d \e[0m\e[1;97mis \e[1;92m[eating]\n\e[0m"
+#define SLEEP "\e[1;97mtime:%zu || Philo \e[1;93mid:%d \e[0m\e[1;97mis \e[1;93m[sleeping]\n\e[0m"
+#define THINK "\e[1;97mtime:%zu || Philo \e[1;94mid:%d \e[0m\e[1;97mis \e[1;94m[thinking]\n\e[0m"
+#define DEAD "\e[1;97mtime:%zu || Philo \e[1;91mid:%d \e[0m\e[1;97mis \e[1;91m[dead]\n\e[0m"
 
 typedef struct s_fork
 {
@@ -44,6 +50,8 @@ typedef struct s_philo
 	t_fork *right_fork;
 	int num_times_eaten; // Number of times the philosopher has eaten
 	int num_times_to_eat;
+	int last_time_eat;
+	bool dead;
     pthread_mutex_t eat_count_mutex; // Mutex for accessing num_times_eaten
 }	t_philo;
 
@@ -60,7 +68,13 @@ void *routine(void *args);
 t_philo *init_philo(int ac, char *av[], t_fork *forks[]);
 t_fork **init_fork(char *av[]);
 int threads(int ac, char *av[]);
+int check_dead(t_philo *philo);
 void create_threads(t_philo *philo, char *av[]);
+void	mysleep(size_t ms_time);
+size_t	get_current_time(void);
+int check_dead(t_philo *philo);
+
+
 
 
 # endif
