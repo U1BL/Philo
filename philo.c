@@ -6,7 +6,7 @@
 /*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:28:45 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/06/30 16:31:49 by mofaisal         ###   ########.fr       */
+/*   Updated: 2023/09/08 21:41:27 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int main(int ac, char *av[])
            return (printf("Error: Invalid time\n"), 0);
        else if (ac == 6 )
        {
-                if (ft_atoi(av[5]) < 1)
-                    return (printf("Error: Invalid number of times to eat\n"), 0);
+            if (ft_atoi(av[5]) < 1)
+            return (printf("Error: Invalid number of times to eat\n"), 0);
        }
         threads(ac, av);
-   }
+    }
     else
          printf("Error: Invalid number of arguments\n");   
     return (0);

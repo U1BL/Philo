@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfaisal <mfaisal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mofaisal <mofaisal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 20:31:27 by mfaisal           #+#    #+#             */
-/*   Updated: 2023/07/23 22:11:01 by mfaisal          ###   ########.fr       */
+/*   Updated: 2023/09/10 18:40:22 by mofaisal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef PHILO_H
 #define PHILO_H
 
-#include "./printf/ft_printf.h"
 #include "./libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,15 +43,20 @@ typedef struct s_philo
 	int num_ph;
 	int time_to_eat;
 	int time_to_sleep;
-	bool is_dead;
+	int is_dead;
 	size_t time;
 	t_fork *left_fork;
 	t_fork *right_fork;
 	int num_times_eaten; // Number of times the philosopher has eaten
 	int num_times_to_eat;
-	int last_time_eat;
+	long long last_time_eat;
 	bool dead;
-    pthread_mutex_t eat_count_mutex; // Mutex for accessing num_times_eaten
+    pthread_mutex_t *eat_count_mutex; // Mutex for accessing num_times_eaten
+	pthread_mutex_t *lock_print;
+	pthread_mutex_t *lock_eat;
+	pthread_mutex_t *lock_eat1;
+	pthread_mutex_t *lock_lasteat;
+	pthread_mutex_t *lock_dead;
 }	t_philo;
 
 typedef struct s_table
@@ -73,6 +77,8 @@ void create_threads(t_philo *philo, char *av[]);
 void	mysleep(size_t ms_time);
 size_t	get_current_time(void);
 int check_dead(t_philo *philo);
+void	free_string_array(t_fork **array);
+// int batata(t_philo *philo);
 
 
 
